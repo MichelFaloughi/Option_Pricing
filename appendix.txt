@@ -1,0 +1,32 @@
+Let's consider options that may or not be Barrier 
+- european or american
+- knock-in or knock-out
+- Up or Down (barrier)
+
+We are given: 
+- simga
+- r
+- stock price at time 0
+- K (strike price)
+- T (maturity)
+- n (number of periods)
+don't make it more compliated that it should be, just take these inputs or the bare minimum inputs and do the rest yourself, optimize after if you want
+
+remember we are solving for the option price at time 0
+
+
+
+
+Implementation steps:
+- Implement the BinomialTree class
+- StockBinomialTree might inherit from the BinomialTree class
+
+
+- Calculate u and d if not given
+- First do the Stock price evolution tree
+- then check if knock-in or knock-out and act accordingly
+- then figure out if up or down and act accordingly
+
+
+Suggestions:
+- perhaps limit N to 1000 in stock price tree
