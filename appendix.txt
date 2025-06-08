@@ -30,3 +30,9 @@ Implementation steps:
 
 Suggestions:
 - perhaps limit N to 1000 in stock price tree
+
+-----------------------------------------
+
+Next steps:
+- make BinomialTree.cpp a header file
+- make the StockTree class that inherits from BinomialTree

@@ -1,79 +1,52 @@
-// This class represents a Binomial Tree.
-// Attributes:
-//      - depth?
-//      - vals
-
-// Potential Methods:
-//      - double getElem(int level, int height)
-//      - void setElem(int level, int height)
-//      - void displayTree()
-//      - void addLevel or removeLevel or something
-//      - vector<vector<double>> buildTreeFromDepth
-
-// idk if all subtrees have the same branching proba for ALLLL binomial tree but if it's the case:
-//      - void fill() - like fill all the nodes if doable idk yet well see.
-
-// to do list:
-// - make vals default to a vector of vector of nulls for now or just a vector of nulls in the constructor
-// - make sure there is a size limit for the depth/level of trees
-// - make sure each sub-vector's length in the vals vectors increase by 1 only
-
-
+#include "BinomialTree.h"
 #include <iostream>
-#include <vector>
-#include <iomanip>  // for std::setw
+#include <iomanip>
+#include <cassert>
 
 using std::vector;
+using std::cout;
+using std::endl;
+using std::setw;
+using std::fixed;
+using std::setprecision;
+using std::string;
 
-class BinomialTree {
-    // attributes
-    int depth;
-    vector<vector<double>> vals; // this is a vector of vector of doubles
+// Constructor that builds the tree from depth
+BinomialTree::BinomialTree(int d)
+    : BinomialTree(d, buildTreeFromDepth(d)) {}
 
-public:
-    // constructor
-    BinomialTree(int d, vector<vector<double>> v) {
-        this->depth = d;
-        this->vals = v;
+// Constructor that accepts external values
+BinomialTree::BinomialTree(int d, const vector<vector<double>>& v) {
+    assert(d > 0 && "Depth must be greater than 0");
+    assert(d <= 10 && "Depth must be less than or equal to 10");
+    assert(v.size() == d && "Vector must match depth");
+
+    // Check that each subvector is size i + 1
+    for (int i = 0; i < d; ++i) {
+        assert(v[i].size() == i + 1 && "Each level must have i+1 elements");
     }
 
-    // methods
-    vector<vector<double>> buildTreeFromDepth(int depth) {
-        vector<vector<double>> vals(depth);
+    this->depth = d;
+    this->vals = v;
+}
 
-        for (int i = 0; i < depth; ++i) {
-            vals[i] = vector<double>(i+1, 0.0);
-        }
+// Build tree filled with 0.0
+vector<vector<double>> BinomialTree::buildTreeFromDepth(int d) {
+    vector<vector<double>> result(d);
+    for (int i = 0; i < d; ++i) {
+        result[i] = vector<double>(i + 1, 0.0);
     }
+    return result;
+}
 
-
-    void displayTree() {
-
-        for (int i = 0; i < this->depth; ++i) {
-        int spaces = (this->depth - i - 1) * 2;
-        std::cout << std::string(spaces, ' ');  // leading spaces
-
-        for (double val : this->vals[i]) {
-            std::cout << std::fixed << std::setprecision(1)
-                      << std::setw(4) << val;
+// Display tree in a triangle layout
+void BinomialTree::displayTree() const {
+    for (int i = 0; i < depth; ++i) {
+        int spaces = (depth - i - 1) * 2;
+        cout << string(spaces, ' ');
+        for (double val : vals[i]) {
+            cout << fixed << setprecision(1) << setw(4) << val;
         }
-
-        std::cout << "\n";
-        }
+        cout << endl;
     }
-
-};
-
-
-int main() {
-    
-    BinomialTree tree = BinomialTree(3, vector<vector<double>>{
-        {0.0},
-        {0.0, 0.0},
-        {0.0, 0.0, 0.0}
-    });
-
-    tree.displayTree();
-    
-    return 0;
 }
