@@ -34,5 +34,4 @@ Suggestions:
 -----------------------------------------
 
 Next steps:
-- make BinomialTree.cpp a header file
 - make the StockTree class that inherits from BinomialTree
