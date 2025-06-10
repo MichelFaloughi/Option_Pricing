@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Solving for C₀</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html">Option Pricing</a>
+    <a href="solving-for-c0.html" class="active">Solving for C₀</a>
+  </nav>
+  <h1>Solving for C₀</h1>
+  <form id="optionForm" class="option-form">
+    <fieldset>
+      <legend>Option Type</legend>
+      <label for="style">Style:</label>
+      <select id="style" name="style">
+        <option value="european">European</option>
+        <option value="american">American</option>
+      </select>
+      <label for="callput">Type:</label>
+      <select id="callput" name="callput">
+        <option value="call">Call</option>
+        <option value="put">Put</option>
+      </select>
+      <label><input type="checkbox" id="barrierCheck"> Barrier Option</label>
+      <div id="barrierOptions" style="display:none; margin-top:8px;">
+        <label for="barrierType">Barrier Type:</label>
+        <select id="barrierType">
+          <option value="knock-in">Knock-In</option>
+          <option value="knock-out">Knock-Out</option>
+        </select>
+        <label for="barrierDirection">Direction:</label>
+        <select id="barrierDirection">
+          <option value="up">Up</option>
+          <option value="down">Down</option>
+        </select>
+        <label for="barrierB">Barrier B:</label>
+        <input type="number" id="barrierB" step="0.01" placeholder="Barrier (B)">
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Payoff Function</legend>
+      <label for="payoff">Payoff:</label>
+      <select id="payoff">
+        <option value="call">Call: max(S-K, 0)</option>
+        <option value="put">Put: max(K-S, 0)</option>
+        <option value="custom">Custom</option>
+      </select>
+      <input type="text" id="customPayoff" placeholder="Enter custom payoff in terms of S and K" style="display:none;">
+    </fieldset>
+    <fieldset>
+      <legend>Parameters</legend>
+      <label for="K">Strike Price (K):</label>
+      <input type="number" id="K" step="0.01" required>
+      <label for="r">Interest Rate (r):</label>
+      <input type="number" id="r" step="0.0001" required>
+      <label for="deltaT">Delta-t (Δt):</label>
+      <input type="number" id="deltaT" step="0.0001" required>
+      <label for="N">N (number of periods):</label>
+      <input type="number" id="N" min="1" step="1" required>
+      <label for="sigma">Sigma (σ):</label>
+      <input type="number" id="sigma" step="0.0001" required>
+      <label for="S0">S₀ (initial stock price):</label>
+      <input type="number" id="S0" step="0.01" required>
+      <label for="T">Maturity (T):</label>
+      <input type="number" id="T" step="0.0001" required>
+    </fieldset>
+    <fieldset>
+      <legend>Computed Values</legend>
+      <div>u = <span id="uValue">-</span></div>
+      <div>d = <span id="dValue">-</span></div>
+      <div>q = <span id="qValue">-</span></div>
+    </fieldset>
+    <button type="button" onclick="computeUDQ()">Compute u, d, q</button>
+  </form>
+  <div class="content-placeholder">
+    <p>Coming soon: Interactive tools and explanations for calculating C₀.</p>
+  </div>
+  <script>
+    // Show/hide barrier options
+    document.getElementById('barrierCheck').addEventListener('change', function() {
+      document.getElementById('barrierOptions').style.display = this.checked ? 'block' : 'none';
+    });
+    // Show/hide custom payoff
+    document.getElementById('payoff').addEventListener('change', function() {
+      document.getElementById('customPayoff').style.display = this.value === 'custom' ? 'inline-block' : 'none';
+    });
+    // Compute u, d, q
+    function computeUDQ() {
+      const sigma = parseFloat(document.getElementById('sigma').value);
+      const deltaT = parseFloat(document.getElementById('deltaT').value);
+      const r = parseFloat(document.getElementById('r').value);
+      if (isNaN(sigma) || isNaN(deltaT) || isNaN(r)) return;
+      const u = Math.exp(sigma * deltaT);
+      const d = Math.exp(-sigma * deltaT);
+      const q = (Math.exp(r * deltaT) - d) / (u - d);
+      document.getElementById('uValue').textContent = u.toFixed(6);
+      document.getElementById('dValue').textContent = d.toFixed(6);
+      document.getElementById('qValue').textContent = q.toFixed(6);
+    }
+    // Optionally, auto-compute on input change
+    ['sigma','deltaT','r'].forEach(id => {
+      document.getElementById(id).addEventListener('input', computeUDQ);
+    });
+  </script>
+</body>
+</html> 

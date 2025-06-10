@@ -2,15 +2,100 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Option Pricing Project -test test</title>
+  <title>Option Pricing Project</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <nav class="navbar">
+    <a href="index.html" class="active">Option Pricing</a>
+    <a href="solving-for-c0.html">Solving for C₀</a>
+  </nav>
   <h1>Option Pricing</h1>
   <p>This is my C++ project on binomial trees and option pricing.</p>
-  <ul>
-    <li><a href="https://github.com/YOUR_USERNAME/option_pricing">View on GitHub</a></li>
-    <li><a href="../include/BinomialTree.h">BinomialTree.h</a></li>
-    <li><a href="../src/main.cpp">main.cpp</a></li>
-  </ul>
+  
+  <div class="controls">
+    <label for="depth"><b>N</b> (number of periods):</label>
+    <input type="number" id="depth" value="3" min="1" max="10" placeholder="Tree Depth">
+    <label for="initialPrice"><b>S<sub>0</sub></b> (initial stock price):</label>
+    <input type="number" id="initialPrice" value="100" min="1" placeholder="Initial Price">
+    <label for="upFactor"><b>u</b> (up factor):</label>
+    <input type="number" id="upFactor" value="1.2" min="0.01" step="0.0001" placeholder="Up Factor">
+    <label for="downFactor"><b>d</b> (down factor):</label>
+    <input type="number" id="downFactor" value="0.8333" min="0.01" step="0.0001" placeholder="Down Factor">
+    <button onclick="generateTree()">Generate Tree</button>
+    <div id="ud-warning" style="color: #d32f2f; margin-top: 8px; font-size: 14px; display: none;"></div>
+  </div>
+
+  <div id="treeContainer" class="tree-container"></div>
+
+  <script src="js/tree-visualizer.js"></script>
+  <script>
+    const visualizer = new TreeVisualizer('treeContainer');
+
+    // Autofill logic for u and d
+    const uInput = document.getElementById('upFactor');
+    const dInput = document.getElementById('downFactor');
+    const warningDiv = document.getElementById('ud-warning');
+    let isAutofilling = false;
+
+    function checkUDWarning() {
+      const u = parseFloat(uInput.value);
+      const d = parseFloat(dInput.value);
+      if (u > 0 && d > 0 && Math.abs(d - 1/u) > 0.0001) {
+        warningDiv.style.display = 'block';
+        warningDiv.textContent = `Warning: d ≠ 1/u with the values you have chosen (u = ${u}, d = ${d}). Consider changing.`;
+      } else {
+        warningDiv.style.display = 'none';
+        warningDiv.textContent = '';
+      }
+    }
+
+    uInput.addEventListener('input', function () {
+      if (isAutofilling) return;
+      const u = parseFloat(uInput.value);
+      if (u > 0) {
+        isAutofilling = true;
+        dInput.value = (1 / u).toFixed(4);
+        isAutofilling = false;
+      }
+      checkUDWarning();
+    });
+
+    dInput.addEventListener('input', function () {
+      if (isAutofilling) return;
+      const d = parseFloat(dInput.value);
+      if (d > 0) {
+        isAutofilling = true;
+        uInput.value = (1 / d).toFixed(4);
+        isAutofilling = false;
+      }
+      checkUDWarning();
+    });
+
+    // Also check warning on page load and when generating tree
+    function generateTree() {
+      const depth = parseInt(document.getElementById('depth').value);
+      const initialPrice = parseFloat(document.getElementById('initialPrice').value);
+      const upFactor = parseFloat(uInput.value);
+      const downFactor = parseFloat(dInput.value);
+      checkUDWarning();
+
+      // Generate tree data
+      const treeData = [];
+      for (let i = 0; i < depth; i++) {
+        const level = [];
+        for (let j = 0; j <= i; j++) {
+          const value = initialPrice * Math.pow(upFactor, j) * Math.pow(downFactor, i - j);
+          level.push(value);
+        }
+        treeData.push(level);
+      }
+
+      visualizer.visualizeTree(treeData);
+    }
+
+    // Generate initial tree
+    generateTree();
+  </script>
 </body>
 </html>

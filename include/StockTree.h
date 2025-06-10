@@ -11,7 +11,9 @@ public:
     double u;   // Up factor
     double d;   // Down factor
 
-    StockTree(int dpt, double S0, double u, double d);
+    StockTree(int N, double S0, double u, double d);
+    StockTree(const StockTree&) = delete;
+    StockTree& operator=(const StockTree&) = delete;
 
 private:
     void buildStockTree(); 
