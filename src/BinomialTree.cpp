@@ -13,7 +13,7 @@ using std::string;
 
 // Constructor that builds the tree from depth
 BinomialTree::BinomialTree(int dpt)
-    : BinomialTree(dpt, buildTreeFromDepth(dpt)) {}
+    : BinomialTree(dpt, buildDefaultTreeFromDepth(dpt)) {}
 
 // Constructor that accepts external values
 BinomialTree::BinomialTree(int dpt, const vector<vector<double>>& v) {
@@ -22,7 +22,7 @@ BinomialTree::BinomialTree(int dpt, const vector<vector<double>>& v) {
     assert(v.size() == dpt && "Vector must match depth");
 
     // Check that each subvector is size i + 1
-    for (int i = 0; i < d; ++i) {
+    for (int i = 0; i < dpt; ++i) {
         assert(v[i].size() == i + 1 && "Each level must have i+1 elements");
     }
 
@@ -30,8 +30,8 @@ BinomialTree::BinomialTree(int dpt, const vector<vector<double>>& v) {
     this->vals = v;
 }
 
-// Build tree filled with 0.0
-vector<vector<double>> BinomialTree::buildTreeFromDepth(int d) {
+// Build tree filled with 0.0 (default values)
+vector<vector<double>> BinomialTree::buildDefaultTreeFromDepth(int d) {
     vector<vector<double>> result(d);
     for (int i = 0; i < d; ++i) {
         result[i] = vector<double>(i + 1, 0.0);

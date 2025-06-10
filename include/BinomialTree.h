@@ -8,8 +8,8 @@ using std::vector;
 
 class BinomialTree {
 public:
-    BinomialTree(int d);
-    BinomialTree(int d, const vector<vector<double>>& v);
+    BinomialTree(int dpt);
+    BinomialTree(int dpt, const vector<vector<double>>& v);
     void displayTree() const;
 
 protected:
@@ -17,7 +17,7 @@ protected:
     vector<vector<double>> vals;
 
 private:
-    static vector<vector<double>> buildTreeFromDepth(int d);
+    static vector<vector<double>> buildDefaultTreeFromDepth(int d);
 };
 
 #endif // BINOMIALTREE_H

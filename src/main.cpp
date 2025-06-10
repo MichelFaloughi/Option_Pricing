@@ -1,18 +1,21 @@
 #include "BinomialTree.h"  // Include your class header
+#include "StockTree.h"
 
 int main() {
-    // Create a tree of depth 3 with custom values
+    // Create trees
     BinomialTree tree1(3, {
-        {0.0},
+        {1},
         {0.0, 0.0},
         {0.0, 0.0, 0.0}
     });
 
-    // Create a tree of depth 5 filled with 0.0 automatically
     BinomialTree tree2(5);
+    StockTree tree3(3, 100.0, 1.2, 0.8);
 
+    // Display 'em
     tree1.displayTree();
     tree2.displayTree();
+    tree3.displayTree();
 
     return 0;
 }
