@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cassert>
+#include <cmath>
 
 using std::vector;
 using std::cout;
@@ -40,5 +41,12 @@ void BinomialTree::displayTree() const {
             cout << fixed << setprecision(1) << setw(4) << val;
         }
         cout << endl;
+    }
+}
+
+BinomialTree::BinomialTree(int N) : N(N) {
+    vals = std::vector<std::vector<double>>(N + 1);
+    for (int i = 0; i <= N; ++i) {
+        vals[i] = std::vector<double>(i + 1);
     }
 }

@@ -30,6 +30,8 @@ int main() {
     printTree(pricer.getOptionTree(), "Option Value Tree:");
     std::cout << "\nOption Price at t=0 (C0): " << pricer.getC0() << std::endl;
 
+
+
     return 0;
 }
 
